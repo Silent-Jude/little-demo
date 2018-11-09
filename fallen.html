@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0,minimal-ui:ios">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>落下游戏</title>
+  <link rel="stylesheet" href="">
+  <script src=""></script>
+  <style>
+    .main {
+      width: 1000px;
+      height: 1000px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .stage {
+      width: 600px;
+      height: 600px;
+      background: rgba(55, 55, 55, 0.3);
+      position: relative;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%)
+    }
+
+    .hide {
+      visibility: hidden;
+    }
+
+    .ejector .trans {
+      opacity: 0;
+    }
+
+    .ejector {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      float: left;
+      position: relative;
+      top: 0px;
+      transition: 4s linear top;
+    }
+
+    .stock {
+      width: 100px;
+      height: 20px;
+      background: #f0f;
+      position: absolute;
+      top: 580px;
+      left: 0px;
+    }
+
+    .score {
+      width: 200px;
+      height: 100px;
+      background: rgba(255, 0, 255, 0.4);
+      position: absolute;
+      top: 100%;
+      text-align: center;
+      font-size: 40px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="main">
+    <div class="stage"></div>
+  </div>
+  <script>
+    var stage = document.getElementsByClassName('stage')[0];
+    // var style = getComputedStyle(stage);
+
+    var frag = document.createDocumentFragment();
+    for (var i = 0; i < 12; i++) {
+      var div = document.createElement('div');
+      div.className = 'ejector' + '';
+      frag.appendChild(div);
+    }
+    stage.appendChild(frag);
+    var ejectors = stage.children;
+
+    function colorNum() {
+      return String(parseInt(Math.random() * 9)) + String(parseInt(Math.random() * 9)) + String(parseInt(Math.random() *
+        9)) + String(parseInt(Math.random() * 9)) + String(parseInt(Math.random() * 9)) + String(parseInt(Math.random() *
+        9));
+    }
+    for (let ejector of ejectors) {
+      ejector.style.background = '#' + colorNum();
+      var timer = setInterval(function () {
+        ejector.style.top = 550 + 'px';
+      }, parseInt(Math.random() * 15000))
+    };
+    var stock = document.createElement('div');
+    stock.className = 'stock';
+    stage.appendChild(stock);
+
+    var score = document.createElement('div');
+    var my_score = 0;
+    score.className = 'score';
+    stage.appendChild(score);
+
+    window.onmousemove = function (el) {
+      var x = el.x - 653;
+      var y = el.y - 210;
+      stock.style.left = x + 'px';
+      // stock.style.top = y+ 'px';
+      for (var i = 0; i < ejectors.length - 2; i++) {
+        // var style = getComputedStyle(ejectors[i]);
+        // console.log('距离左边' + ejectors[i].offsetLeft);
+        // console.log('距离上边' + ejectors[i].offsetTop);
+        if (ejectors[i].offsetLeft + 50 > x && ejectors[i].offsetLeft - 100 < x && ejectors[i].offsetTop > 530) {
+          // alert('撞了')
+          ejectors[i].className = 'ejector hide';
+        }
+        // var x = style.x;
+        // if(y==ejector.)
+      }
+    }
+    
+    score.innerHTML = '分数：' + my_score+'不想写了';
+  </script>
+
+</body>
+
+</html>
